@@ -13,9 +13,12 @@ public class MainMenuUIHandler : MonoBehaviour
 {
     [SerializeField] TMP_InputField nameInput;
     [SerializeField] GameObject noNameWarning;
+    [SerializeField] TextMeshProUGUI highScoreText;
 
     public void Start()
     {
+        highScoreText.text = $"High score: {DataManager.HighScore}";
+
         if (DataManager.Name != "")
         {
             nameInput.text = DataManager.Name;
@@ -46,6 +49,8 @@ public class MainMenuUIHandler : MonoBehaviour
     // Quit the app
     public void QuitApp()
     {
+        DataManager.Instance.SaveInfo();
+
 #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();
 #else
