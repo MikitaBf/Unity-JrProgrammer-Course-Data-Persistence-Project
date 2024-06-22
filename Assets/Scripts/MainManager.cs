@@ -11,6 +11,7 @@ public class MainManager : MonoBehaviour
     public Rigidbody Ball;
 
     public Text ScoreText;
+    public Text HighScoreText;
     public GameObject GameOverText;
     
     private bool m_Started = false;
@@ -35,6 +36,11 @@ public class MainManager : MonoBehaviour
                 brick.PointValue = pointCountArray[i];
                 brick.onDestroyed.AddListener(AddPoint);
             }
+        }
+
+        if (DataManager.HighScore > 0)
+        {
+            HighScoreText.text = $"Previous high score\nValue: {DataManager.HighScore}";
         }
     }
 
@@ -62,12 +68,21 @@ public class MainManager : MonoBehaviour
         }
     }
 
+    // Add a point to current game score
     void AddPoint(int point)
     {
         m_Points += point;
         ScoreText.text = $"Score : {m_Points}";
+
+        // Update high score
+        if (m_Points > DataManager.HighScore)
+        {
+            DataManager.HighScore = m_Points;
+            HighScoreText.text = $"High score\nSet by: {DataManager.Name}\nValue: {DataManager.HighScore}";
+        }
     }
 
+    // End the game
     public void GameOver()
     {
         m_GameOver = true;
